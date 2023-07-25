@@ -1,0 +1,14 @@
+{
+  "name": "js_roman_numerals",
+  "version": "1.0.0",
+  "description": "",
+  "main": "conversion.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Arturo Mora-Rioja (amri@kea.dk)",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "jest": "^29.4.1"
+  }
+}
