@@ -5,9 +5,82 @@
  * 
  * @author  Arturo Mora-Rioja
  * @version 1.0.0 February 2023
+ * @version 1.0.1 September 2024. Specification checks added
  */
 
+const isRepeated = (string, letter) => {
+    const re = new RegExp(letter, 'g');
+    const occurrences = string.match(re);
+    if (occurrences === null) {
+        return false;
+    }
+    if (occurrences.length === 1) {
+        return false;
+    }
+    return true;
+};
+
 const roman2decimal = (number) => {
+
+    const errorMessage = 'Badly formed Roman numeral';
+
+    // Invalid symbols are removed from the string
+    let clean_number = '';
+    for (let letter in number) {
+        if ('MDCLXVI'.includes(number[letter])) {
+            clean_number += number[letter];
+        }
+    }
+    number = clean_number;
+
+    // V, L and D can never be repeated
+    if (isRepeated(number, 'V') || 
+        isRepeated(number, 'L') || 
+        isRepeated(number, 'D')) {
+            throw new Error(errorMessage);
+        }
+        
+    // No digit can be repeated more than 3 times in a row
+    if (number.includes('MMMM') ||
+        number.includes('CCCC') ||
+        number.includes('XXXX') ||
+        number.includes('IIII')) {
+            throw new Error(errorMessage);
+    }
+
+    // D cannot precede M
+    if (number.includes('DM')) {
+        throw new Error(errorMessage);
+    }
+
+    // L cannot precede M, D or C
+    if (number.includes('LM') ||
+        number.includes('LD') ||
+        number.includes('LC')) {
+            throw new Error(errorMessage);
+    }
+
+    // V cannot precede M, D, C, L or X
+    if (number.includes('VM') ||
+        number.includes('VD') ||
+        number.includes('VC') ||
+        number.includes('VL') ||
+        number.includes('VX')) {
+            throw new Error(errorMessage);
+    }
+
+    // X cannot precede D
+    if (number.includes('XD')) {
+            throw new Error(errorMessage);
+    }
+
+    // I cannot precede M, D, C, L
+    if (number.includes('IM') ||
+        number.includes('ID') ||
+        number.includes('IC') ||
+        number.includes('IL')) {
+            throw new Error(errorMessage);
+    }
 
     // Each letter of the Roman numeral is translated into its decimal value
     number = number.split('');
